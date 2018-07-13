@@ -180,7 +180,7 @@ public class CalendarView extends LinearLayout {
         mNextButton = rootView.findViewById(R.id.next_month);
         mCurrentDate = rootView.findViewById(R.id.display_current_date);
         mCalendarGridView = rootView.findViewById(R.id.calendar_grid);
-        mCellsRecyclerView = rootView.findViewById(R.id.recycleradapter);
+        mCellsRecyclerView = rootView.findViewById(R.id.recycler_adapter);
         gridLayoutManager = new GridLayoutManager(mContext, 7);
         gridLayoutManager.setOrientation(VERTICAL);
         mCellsRecyclerView.setLayoutManager(gridLayoutManager);

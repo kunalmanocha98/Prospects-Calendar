@@ -17,7 +17,7 @@
             android:id="@+id/previous_month"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical|center_horizontal"
+            android:layout_gravity="start|center"
             android:layout_weight="1"
             android:contentDescription="@string/app_name"
             android:src="@drawable/left_arrow" />
@@ -39,7 +39,7 @@
             android:id="@+id/next_month"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center_vertical"
+            android:layout_gravity="start|center"
             android:layout_weight="1"
             android:contentDescription="@string/app_name"
             android:src="@drawable/right_arrow" />
@@ -128,10 +128,11 @@
             android:gravity="center"
             android:text="@string/sat"
             android:textColor="@color/colorBlack" />
+
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycleradapter"
+        android:id="@+id/recycler_adapter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
@@ -140,7 +141,7 @@
         android:id="@+id/calendar_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#e5e5e5"
+        android:background="@color/white"
         android:horizontalSpacing="1dp"
         android:numColumns="7"
         android:stretchMode="columnWidth"

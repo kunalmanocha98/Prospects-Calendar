@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     private static Retrofit mRetrofit;
-    private static final String BASE_URL = "https://www.agnitioworld.com/calendar_management/";
+    private static final String BASE_URL = "http://bydegreestest.agnitioworld.com/calendar_management/";
 
     public static Retrofit getRetrofitClient() {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();

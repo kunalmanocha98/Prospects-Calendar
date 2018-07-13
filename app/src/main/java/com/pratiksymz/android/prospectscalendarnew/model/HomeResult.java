@@ -2,7 +2,7 @@ package com.pratiksymz.android.prospectscalendarnew.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class DashboardResult {
+public class HomeResult {
     @SerializedName("year")
     private int yearTotal;
 
@@ -15,11 +15,17 @@ public class DashboardResult {
     @SerializedName("month_name")
     private String monthName;
 
+    @SerializedName("status_month")
+    private String monthStatus;
+
     @SerializedName("date_value")
     private int todayTotal;
 
     @SerializedName("date")
     private String todayDate;
+
+    @SerializedName("status_day")
+    private String todayStatus;
 
     public int getYearTotal() {
         return yearTotal;
@@ -29,11 +35,19 @@ public class DashboardResult {
         return monthTotal;
     }
 
+    public String getMonthStatus() {
+        return monthStatus;
+    }
+
     public int getTodayTotal() {
         return todayTotal;
     }
 
     public String getTodayDate() {
         return todayDate;
+    }
+
+    public String getTodayStatus() {
+        return todayStatus;
     }
 }

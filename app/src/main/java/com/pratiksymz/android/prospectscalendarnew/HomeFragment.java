@@ -11,14 +11,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.pratiksymz.android.prospectscalendarnew.OkHttpClient.ApiService;
 import com.pratiksymz.android.prospectscalendarnew.OkHttpClient.ApiUtils;
-import com.pratiksymz.android.prospectscalendarnew.model.Dashboard;
-import com.pratiksymz.android.prospectscalendarnew.model.DashboardResult;
+import com.pratiksymz.android.prospectscalendarnew.model.HomeApi;
+import com.pratiksymz.android.prospectscalendarnew.model.HomeResult;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -51,8 +52,14 @@ public class HomeFragment extends Fragment {
     @BindView(R.id.home_expenses_day)
     TextView mHomeDayView;
 
+    @BindView(R.id.view_day_status)
+    ImageView mHomeDayStatus;
+
     @BindView(R.id.home_expenses_month)
     TextView mHomeMonthView;
+
+    @BindView(R.id.view_month_status)
+    ImageView mHomeMonthStatus;
 
     @BindView(R.id.balance_sheet)
     CardView mBalanceSheet;
@@ -80,21 +87,34 @@ public class HomeFragment extends Fragment {
         mShimmerViewContainer = rootView.findViewById(R.id.dashboard_shimmer_view_container);
         mShimmerViewContainer.startShimmerAnimation();
 
-        // Set the Dashboard data
+        // Set the HomeApi data
         ApiService apiService = ApiUtils.getApiService();
-        apiService.results().enqueue(new Callback<Dashboard>() {
+        apiService.homeResults().enqueue(new Callback<HomeApi>() {
             @Override
-            public void onResponse(Call<Dashboard> call, Response<Dashboard> response) {
-                Dashboard dashboard = response.body();
-                if (dashboard.getStatusCode() == 101 && dashboard.getStatusMessage().equals("success")) {
-                    DashboardResult result = dashboard.getDashboardResult();
+            public void onResponse(Call<HomeApi> call, Response<HomeApi> response) {
+                HomeApi home = response.body();
+                if (home.getStatusCode() == 101 && home.getStatusMessage().equals("success")) {
+                    HomeResult result = home.getHomeResult();
 
                     mHomeYearView.setText("Rs. " + VALUE_FORMATTER.format(result.getYearTotal()));
                     mHomeMonthView.setText("Rs. " + VALUE_FORMATTER.format(result.getMonthTotal()));
                     mHomeDayView.setText("Rs. " + VALUE_FORMATTER.format(result.getTodayTotal()));
+
+                    if (result.getMonthStatus().equals("inc")) {
+                        mHomeMonthStatus.setImageDrawable(getActivity().getDrawable(R.drawable.ic_value_up));
+                    } else {
+                        mHomeMonthStatus.setImageDrawable(getActivity().getDrawable(R.drawable.ic_value_down));
+                    }
+
+                    if (result.getTodayStatus().equals("inc")) {
+                        mHomeDayStatus.setImageDrawable(getActivity().getDrawable(R.drawable.ic_value_up));
+                    } else {
+                        mHomeDayStatus.setImageDrawable(getActivity().getDrawable(R.drawable.ic_value_down));
+                    }
+
                 } else {
                     Log.d("No Result",
-                            dashboard.getStatusCode() + " " + dashboard.getStatusMessage()
+                            home.getStatusCode() + " " + home.getStatusMessage()
                     );
                 }
 
@@ -105,7 +125,7 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<Dashboard> call, Throwable t) {
+            public void onFailure(Call<HomeApi> call, Throwable t) {
                 Log.e("Url error", t.getLocalizedMessage());
             }
         });
