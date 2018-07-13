@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorred"
+        android:background="@color/violet"
         android:orientation="horizontal"
         android:paddingBottom="16dp"
         android:paddingTop="20dp">
@@ -17,7 +17,7 @@
             android:id="@+id/previous_month"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_gravity="left|center_vertical|center_horizontal"
             android:layout_weight="1"
             android:contentDescription="@string/app_name"
             android:src="@drawable/left_arrow" />
@@ -28,16 +28,18 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_weight="3"
-            android:gravity="center"
+            android:fontFamily="@font/roboto_black"
+            android:gravity="center_vertical|center_horizontal|center"
             android:text="@string/current_date"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/white"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/next_month"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_gravity="left|center_vertical"
             android:layout_weight="1"
             android:contentDescription="@string/app_name"
             android:src="@drawable/right_arrow" />
@@ -56,6 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium"
             android:gravity="center"
             android:text="@string/sun"
             android:textColor="@color/colorBlack" />
@@ -66,6 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium"
             android:gravity="center"
             android:text="@string/mon"
             android:textColor="@color/colorBlack" />
@@ -76,6 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium"
             android:gravity="center"
             android:text="@string/tue"
             android:textColor="@color/colorBlack" />
@@ -86,6 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium"
             android:gravity="center"
             android:text="@string/wed"
             android:textColor="@color/colorBlack" />
@@ -96,6 +102,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium"
             android:gravity="center"
             android:text="@string/thu"
             android:textColor="@color/colorBlack" />
@@ -106,6 +113,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium"
             android:gravity="center"
             android:text="@string/fri"
             android:textColor="@color/colorBlack" />
@@ -116,6 +124,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_weight="1"
+            android:fontFamily="@font/roboto_medium"
             android:gravity="center"
             android:text="@string/sat"
             android:textColor="@color/colorBlack" />
@@ -125,9 +134,7 @@
         android:id="@+id/recycleradapter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
-
-    </android.support.v7.widget.RecyclerView>>
+        android:visibility="gone" />
 
     <GridView
         android:id="@+id/calendar_grid"

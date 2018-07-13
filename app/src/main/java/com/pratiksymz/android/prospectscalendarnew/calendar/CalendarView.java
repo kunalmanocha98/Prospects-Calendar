@@ -29,9 +29,9 @@ import java.util.Locale;
 
 public class CalendarView extends LinearLayout {
     /**
-     * LOG TAG for Logging
+     * LOG LOG_TAG for Logging
      */
-    private static final String TAG = CalendarView.class.getSimpleName();
+    private static final String LOG_TAG = CalendarView.class.getSimpleName();
 
     /**
      * ImageView Buttons to skip between month view pages
@@ -257,7 +257,7 @@ public class CalendarView extends LinearLayout {
             calendar.add(Calendar.DAY_OF_MONTH, 1);
         }
 
-        Log.d(TAG, "Number of dates: " + dayValueInCells.size());
+        Log.d(LOG_TAG, "Number of dates: " + dayValueInCells.size());
 
         String formattedDate = formatter.format(mCalendar.getTime());
         mCurrentDate.setText(formattedDate);

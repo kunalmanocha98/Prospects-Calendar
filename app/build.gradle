@@ -20,6 +20,9 @@ android {
         targetCompatibility 1.8
         sourceCompatibility 1.8
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -49,5 +52,3 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
 }
-
-apply plugin: 'com.google.gms.google-services'
