@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "968371825907",
+    "firebase_url": "https://prospects-calendar.firebaseio.com",
+    "project_id": "prospects-calendar",
+    "storage_bucket": "prospects-calendar.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:968371825907:android:eb53633d7fed0156",
+        "android_client_info": {
+          "package_name": "com.pratiksymz.android.prospectscalendarnew"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "968371825907-ip76c17nm0km5a53kdu8es4grbnnrlpk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pratiksymz.android.prospectscalendarnew",
+            "certificate_hash": "d41b1bdab328d4fb06942c46667bc911259ba999"
+          }
+        },
+        {
+          "client_id": "968371825907-b2r60o85d1b0n6j2f6cg8brtrnbdsh7g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD75DQ6W_6cBmYYyE4T0VHKCPWPW2UTl5U"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "968371825907-b2r60o85d1b0n6j2f6cg8brtrnbdsh7g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
