@@ -25,7 +25,7 @@ import android.widget.TextView;
 
 import com.pratiksymz.android.prospectscalendarnew.R;
 import com.pratiksymz.android.prospectscalendarnew.adapters.DialogAdapter;
-import com.pratiksymz.android.prospectscalendarnew.interfaces.DataTransferInterface;
+import com.pratiksymz.android.prospectscalendarnew.interfaces.DialogDataTransferInterface;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -36,7 +36,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class EditorActivity extends AppCompatActivity implements DataTransferInterface {
+public class EditorActivity extends AppCompatActivity implements DialogDataTransferInterface {
     @BindView(R.id.image_view_receipt)
     ImageView mExpenseReceipt;
 

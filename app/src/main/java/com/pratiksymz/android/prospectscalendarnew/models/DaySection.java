@@ -1,4 +1,4 @@
-package com.pratiksymz.android.prospectscalendarnew.model;
+package com.pratiksymz.android.prospectscalendarnew.models;
 
 public class DaySection {
     private String sectionDate;

@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.pratiksymz.android.prospectscalendarnew.R;
-import com.pratiksymz.android.prospectscalendarnew.model.DayResult;
+import com.pratiksymz.android.prospectscalendarnew.models.DayResult;
 
 import java.util.List;
 

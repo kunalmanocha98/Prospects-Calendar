@@ -19,8 +19,8 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.pratiksymz.android.prospectscalendarnew.retrofit.ApiService;
 import com.pratiksymz.android.prospectscalendarnew.retrofit.ApiUtils;
 import com.pratiksymz.android.prospectscalendarnew.R;
-import com.pratiksymz.android.prospectscalendarnew.model.HomeApi;
-import com.pratiksymz.android.prospectscalendarnew.model.HomeResult;
+import com.pratiksymz.android.prospectscalendarnew.models.HomeApi;
+import com.pratiksymz.android.prospectscalendarnew.models.HomeResult;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

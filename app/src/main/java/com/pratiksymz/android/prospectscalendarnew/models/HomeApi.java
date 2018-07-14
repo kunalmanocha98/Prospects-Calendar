@@ -1,10 +1,8 @@
-package com.pratiksymz.android.prospectscalendarnew.model;
+package com.pratiksymz.android.prospectscalendarnew.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
-public class DayApi {
+public class HomeApi {
     @SerializedName("code")
     private int statusCode;
 
@@ -12,7 +10,7 @@ public class DayApi {
     private String statusMessage;
 
     @SerializedName("result")
-    private List<DayResult> dayResults;
+    private HomeResult homeResult;
 
     public int getStatusCode() {
         return statusCode;
@@ -22,7 +20,7 @@ public class DayApi {
         return statusMessage;
     }
 
-    public List<DayResult> getDayResults() {
-        return dayResults;
+    public HomeResult getHomeResult() {
+        return homeResult;
     }
 }

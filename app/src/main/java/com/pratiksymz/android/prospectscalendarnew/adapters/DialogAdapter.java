@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.pratiksymz.android.prospectscalendarnew.R;
-import com.pratiksymz.android.prospectscalendarnew.interfaces.DataTransferInterface;
+import com.pratiksymz.android.prospectscalendarnew.interfaces.DialogDataTransferInterface;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +18,7 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.ViewHolder
     private Context mContext;
     private List<String> mDialogItems;
     private List<String> mPaymentMethods;
-    private DataTransferInterface mDataTransferInterface;
+    private DialogDataTransferInterface mDataTransferInterface;
 
     /**
      * Dialog Adapter Constructor
@@ -27,7 +27,7 @@ public class DialogAdapter extends RecyclerView.Adapter<DialogAdapter.ViewHolder
      * @param dialogItems
      */
     public DialogAdapter(Context context, List<String> dialogItems,
-                         DataTransferInterface dataTransferInterface) {
+                         DialogDataTransferInterface dataTransferInterface) {
         mContext = context;
         mDialogItems = dialogItems;
         mPaymentMethods = Arrays.asList(context.getResources().getStringArray(R.array.payment_methods));

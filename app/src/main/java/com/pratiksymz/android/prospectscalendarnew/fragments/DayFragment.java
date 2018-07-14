@@ -14,8 +14,8 @@ import com.pratiksymz.android.prospectscalendarnew.retrofit.ApiService;
 import com.pratiksymz.android.prospectscalendarnew.retrofit.ApiUtils;
 import com.pratiksymz.android.prospectscalendarnew.R;
 import com.pratiksymz.android.prospectscalendarnew.adapters.DaySectionAdapter;
-import com.pratiksymz.android.prospectscalendarnew.model.DayApi;
-import com.pratiksymz.android.prospectscalendarnew.model.DayResult;
+import com.pratiksymz.android.prospectscalendarnew.models.DayApi;
+import com.pratiksymz.android.prospectscalendarnew.models.DayResult;
 
 import java.util.List;
 

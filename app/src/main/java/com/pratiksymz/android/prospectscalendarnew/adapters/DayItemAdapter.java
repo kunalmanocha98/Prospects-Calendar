@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.pratiksymz.android.prospectscalendarnew.R;
-import com.pratiksymz.android.prospectscalendarnew.model.DayItem;
+import com.pratiksymz.android.prospectscalendarnew.models.DayItem;
 
 import java.util.List;
 

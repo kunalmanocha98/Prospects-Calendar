@@ -1,4 +1,4 @@
-package com.pratiksymz.android.prospectscalendarnew.model;
+package com.pratiksymz.android.prospectscalendarnew.models;
 
 import com.google.gson.annotations.SerializedName;
 
