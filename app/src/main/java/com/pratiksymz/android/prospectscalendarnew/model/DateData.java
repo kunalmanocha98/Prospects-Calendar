@@ -10,4 +10,12 @@ public class DateData {
 
     @SerializedName("expenses")
     private List<DayItem> dayItems;
+
+    public int getDayTotal() {
+        return dayTotal;
+    }
+
+    public List<DayItem> getDayItems() {
+        return dayItems;
+    }
 }

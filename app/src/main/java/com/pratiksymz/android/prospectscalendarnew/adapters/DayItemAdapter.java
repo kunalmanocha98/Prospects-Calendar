@@ -42,33 +42,43 @@ public class DayItemAdapter extends RecyclerView.Adapter<DayItemAdapter.ViewHold
 
         viewHolder.category.setText(dayItem.getCategory());
 
-        Drawable gradient = null;
+        Drawable gradient;
         String color = null;
         switch (dayItem.getCategory()) {
-            case "Food":
+            case "food":
                 gradient = mContext.getDrawable(R.drawable.category_food_gradient);
                 break;
 
-            case "Social Life":
+            case "social_life":
                 gradient = mContext.getDrawable(R.drawable.category_social_gradient);
                 break;
 
-            case "Self Development":
+            case "self_dev":
                 gradient = mContext.getDrawable(R.drawable.category_self_gradient);
                 break;
 
-            case "Transportation":
+            case "transport":
                 gradient = mContext.getDrawable(R.drawable.category_transport_gradient);
                 break;
 
-            case "Beauty":
+            case "beauty":
                 gradient = mContext.getDrawable(R.drawable.category_beauty_gradient);
                 color = "#EC407A";
                 break;
 
-            case "Education":
+            case "education":
                 gradient = mContext.getDrawable(R.drawable.category_education_gradient);
                 color = "#FF6F00";
+                break;
+
+            case "gift":
+                gradient = mContext.getDrawable(R.drawable.category_gift_gradient);
+                color = "#311B92";
+                break;
+
+            default:
+                gradient = mContext.getDrawable(R.drawable.category_other_gradient);
+                color = "#263238";
                 break;
         }
 

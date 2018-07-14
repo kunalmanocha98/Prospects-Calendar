@@ -10,19 +10,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.pratiksymz.android.prospectscalendarnew.R;
-import com.pratiksymz.android.prospectscalendarnew.model.DayItem;
-import com.pratiksymz.android.prospectscalendarnew.model.DaySection;
+import com.pratiksymz.android.prospectscalendarnew.model.DayResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DaySectionAdapter extends RecyclerView.Adapter<DaySectionAdapter.ViewHolder> {
     private Context mContext;
-    private List<DaySection> mDaySections;
+    private List<DayResult> mDayResults;
 
-    public DaySectionAdapter(Context context, List<DaySection> daySections) {
+    public DaySectionAdapter(Context context, List<DayResult> dayResults) {
         mContext = context;
-        mDaySections = daySections;
+        mDayResults = dayResults;
     }
 
     @NonNull
@@ -38,28 +36,23 @@ public class DaySectionAdapter extends RecyclerView.Adapter<DaySectionAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull DaySectionAdapter.ViewHolder viewHolder, int position) {
         // Get the current item
-        DaySection daySection = mDaySections.get(position);
+        DayResult dayResult = mDayResults.get(position);
 
         TextView mDate =  viewHolder.mDayDate;
         TextView mDateTotal = viewHolder.mDayExpenseTotal;
 
-        mDate.setText(daySection.getSectionDate());
-        mDateTotal.setText(String.valueOf(daySection.getSectionExpenseTotal()));
+        mDate.setText(dayResult.getDate());
+        mDateTotal.setText(String.valueOf(dayResult.getDateData().getDayTotal()));
 
         RecyclerView dayExpensesView = viewHolder.mDayExpensesView;
         dayExpensesView.setLayoutManager(new LinearLayoutManager(mContext));
-
-        List<DayItem> dayItems = new ArrayList<>();
-        dayItems.add(new DayItem(3563156, "Cash", "Beauty", 56));
-        dayItems.add(new DayItem(8563745, "Online Payment", "Education", 9800));
-
-        DayItemAdapter adapter = new DayItemAdapter(mContext, dayItems);
+        DayItemAdapter adapter = new DayItemAdapter(mContext, dayResult.getDateData().getDayItems());
         dayExpensesView.setAdapter(adapter);
     }
 
     @Override
     public int getItemCount() {
-        return mDaySections.size();
+        return mDayResults.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
