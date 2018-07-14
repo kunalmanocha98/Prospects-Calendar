@@ -1,4 +1,4 @@
-package com.pratiksymz.android.prospectscalendarnew.Retrofit;
+package com.pratiksymz.android.prospectscalendarnew.retrofit;
 
 import com.pratiksymz.android.prospectscalendarnew.model.DayApi;
 import com.pratiksymz.android.prospectscalendarnew.model.HomeApi;

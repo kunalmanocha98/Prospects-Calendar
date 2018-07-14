@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.pratiksymz.android.prospectscalendarnew.Retrofit.ApiService;
-import com.pratiksymz.android.prospectscalendarnew.Retrofit.ApiUtils;
+import com.pratiksymz.android.prospectscalendarnew.retrofit.ApiService;
+import com.pratiksymz.android.prospectscalendarnew.retrofit.ApiUtils;
 import com.pratiksymz.android.prospectscalendarnew.R;
 import com.pratiksymz.android.prospectscalendarnew.adapters.DaySectionAdapter;
 import com.pratiksymz.android.prospectscalendarnew.model.DayApi;

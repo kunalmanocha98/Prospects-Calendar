@@ -16,8 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.pratiksymz.android.prospectscalendarnew.Retrofit.ApiService;
-import com.pratiksymz.android.prospectscalendarnew.Retrofit.ApiUtils;
+import com.pratiksymz.android.prospectscalendarnew.retrofit.ApiService;
+import com.pratiksymz.android.prospectscalendarnew.retrofit.ApiUtils;
 import com.pratiksymz.android.prospectscalendarnew.R;
 import com.pratiksymz.android.prospectscalendarnew.model.HomeApi;
 import com.pratiksymz.android.prospectscalendarnew.model.HomeResult;

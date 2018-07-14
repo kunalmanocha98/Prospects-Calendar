@@ -1,4 +1,4 @@
-package com.pratiksymz.android.prospectscalendarnew.Retrofit;
+package com.pratiksymz.android.prospectscalendarnew.retrofit;
 
 import java.util.concurrent.TimeUnit;
 
