@@ -1,4 +1,4 @@
-package com.pratiksymz.android.prospectscalendarnew;
+package com.pratiksymz.android.prospectscalendarnew.activities;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.pratiksymz.android.prospectscalendarnew.R;
 import com.pratiksymz.android.prospectscalendarnew.adapters.DialogAdapter;
 import com.pratiksymz.android.prospectscalendarnew.interfaces.DataTransferInterface;
 

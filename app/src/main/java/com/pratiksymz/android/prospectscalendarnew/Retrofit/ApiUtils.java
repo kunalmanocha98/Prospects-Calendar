@@ -1,4 +1,4 @@
-package com.pratiksymz.android.prospectscalendarnew.OkHttpClient;
+package com.pratiksymz.android.prospectscalendarnew.Retrofit;
 
 public class ApiUtils {
     /**

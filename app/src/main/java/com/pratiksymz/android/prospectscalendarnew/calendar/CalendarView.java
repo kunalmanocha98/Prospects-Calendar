@@ -15,7 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.pratiksymz.android.prospectscalendarnew.EditorActivity;
+import com.pratiksymz.android.prospectscalendarnew.activities.EditorActivity;
 import com.pratiksymz.android.prospectscalendarnew.R;
 
 import java.text.ParseException;

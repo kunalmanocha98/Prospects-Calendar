@@ -1,4 +1,4 @@
-package com.pratiksymz.android.prospectscalendarnew;
+package com.pratiksymz.android.prospectscalendarnew.fragments;
 
 
 import android.os.Bundle;
@@ -10,8 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.pratiksymz.android.prospectscalendarnew.OkHttpClient.ApiService;
-import com.pratiksymz.android.prospectscalendarnew.OkHttpClient.ApiUtils;
+import com.pratiksymz.android.prospectscalendarnew.Retrofit.ApiService;
+import com.pratiksymz.android.prospectscalendarnew.Retrofit.ApiUtils;
+import com.pratiksymz.android.prospectscalendarnew.R;
 import com.pratiksymz.android.prospectscalendarnew.adapters.DaySectionAdapter;
 import com.pratiksymz.android.prospectscalendarnew.model.DayApi;
 import com.pratiksymz.android.prospectscalendarnew.model.DayResult;

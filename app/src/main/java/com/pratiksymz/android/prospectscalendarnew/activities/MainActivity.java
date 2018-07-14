@@ -1,4 +1,4 @@
-package com.pratiksymz.android.prospectscalendarnew;
+package com.pratiksymz.android.prospectscalendarnew.activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+
+import com.pratiksymz.android.prospectscalendarnew.R;
+import com.pratiksymz.android.prospectscalendarnew.fragments.CalendarFragment;
+import com.pratiksymz.android.prospectscalendarnew.fragments.DayFragment;
+import com.pratiksymz.android.prospectscalendarnew.fragments.HomeFragment;
+import com.pratiksymz.android.prospectscalendarnew.fragments.MonthFragment;
 
 public class MainActivity extends AppCompatActivity
         implements BottomNavigationView.OnNavigationItemSelectedListener {
