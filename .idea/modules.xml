@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ProspectsCalendarNew.iml" filepath="$PROJECT_DIR$/ProspectsCalendarNew.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Prospects-Calendar.iml" filepath="$PROJECT_DIR$/Prospects-Calendar.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

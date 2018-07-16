@@ -93,36 +93,34 @@ public class HomeFragment extends Fragment {
         apiService.homeResults().enqueue(new Callback<HomeApi>() {
             @Override
             public void onResponse(Call<HomeApi> call, Response<HomeApi> response) {
-                HomeApi home = response.body();
-                if (home.getStatusCode() == 101 && home.getStatusMessage().equals("success")) {
-                    HomeResult result = home.getHomeResult();
+                if (response.isSuccessful() && response.body().getStatusMessage().equals("success")) {
+//                    HomeResult result = home.getHomeResult();
 
-                    mHomeYearView.setText("Rs. " + VALUE_FORMATTER.format(result.getYearTotal()));
-                    mHomeMonthView.setText("Rs. " + VALUE_FORMATTER.format(result.getMonthTotal()));
-                    mHomeDayView.setText("Rs. " + VALUE_FORMATTER.format(result.getTodayTotal()));
+                    mHomeYearView.setText("Rs. " + VALUE_FORMATTER.format(response.body().getHomeResult().getYearTotal()));
+                    mHomeMonthView.setText("Rs. " + VALUE_FORMATTER.format(response.body().getHomeResult().getMonthTotal()));
+                    mHomeDayView.setText("Rs. " + VALUE_FORMATTER.format(response.body().getHomeResult().getTodayTotal()));
 
-                    if (result.getMonthStatus().equals("inc")) {
+                    if (response.body().getHomeResult().getMonthStatus().equals("inc")) {
                         mHomeMonthStatus.setImageDrawable(getActivity().getDrawable(R.drawable.ic_value_up));
                     } else {
                         mHomeMonthStatus.setImageDrawable(getActivity().getDrawable(R.drawable.ic_value_down));
                     }
 
-                    if (result.getTodayStatus().equals("inc")) {
+                    if (response.body().getHomeResult().getTodayStatus().equals("inc")) {
                         mHomeDayStatus.setImageDrawable(getActivity().getDrawable(R.drawable.ic_value_up));
                     } else {
                         mHomeDayStatus.setImageDrawable(getActivity().getDrawable(R.drawable.ic_value_down));
                     }
 
                 } else {
-                    Log.d("No Result",
-                            home.getStatusCode() + " " + home.getStatusMessage()
-                    );
+//                    Log.d("No Result",response.body().getStatusCode() + " " + response.body().getStatusMessage());
                 }
 
                 // Stopping Shimmer Effect's animation after data is loaded to ListView
                 mShimmerViewContainer.stopShimmerAnimation();
                 mShimmerViewContainer.setVisibility(View.GONE);
                 mBalanceSheet.setVisibility(View.VISIBLE);
+
             }
 
             @Override
@@ -133,10 +131,10 @@ public class HomeFragment extends Fragment {
 
         // Get the view
         mLineChart = rootView.findViewById(R.id.line_chart);
-        
-        // Generate and set line chart data
-        setLineChartData();
 
+        // Generate and set line chart data
+
+        setLineChartData();
         return rootView;
     }
 
@@ -144,7 +142,23 @@ public class HomeFragment extends Fragment {
      * Generates the dataset for the line chart
      */
     private void setLineChartData() {
+
+
+//        LineChartData data = new LineChartData();
+//        List<PointValue> values = new ArrayList<>();
+//        values.add(new PointValue(0, 2));
+//        values.add(new PointValue(1, 4));
+//        values.add(new PointValue(2, 3));
+//        values.add(new PointValue(3, 4));
+//        Line line = new Line(values);
+//        List<Line> lines = new ArrayList<Line>(1);
+//        lines.add(line);
+//        data.setLines(lines);
+//
+
+
         List<AxisValue> axisValues = new ArrayList<>();
+        LineChartData data = new LineChartData();
         List<PointValue> values = new ArrayList<>();
 
         // Retrieve the months
@@ -154,7 +168,7 @@ public class HomeFragment extends Fragment {
 
         // Generate the values
         for (int i = 0; i < months.size(); i++) {
-            values.add(new PointValue(i, (float) Math.random() * 100000));
+            values.add(new PointValue(i, (float) (Math.random() * 100000)));
             axisValues.add(new AxisValue(i).setLabel(months.get(i)));
         }
 
@@ -170,25 +184,32 @@ public class HomeFragment extends Fragment {
 
         Typeface labelTypeface = ResourcesCompat.getFont(getActivity(), R.font.roboto_medium);
 
-        LineChartData lineChartData = new LineChartData(lines);
-        lineChartData.setAxisXBottom(
+//        LineChartData lineChartData = new LineChartData(lines);
+//        lineChartData.setAxisXBottom(
+//                new Axis(axisValues)
+//                        .setHasSeparationLine(false)
+//                        .setHasLines(false)
+//                        .setTypeface(labelTypeface)
+//                        .setTextColor(getActivity().getColor(R.color.black))
+//        );
+
+//        lineChartData.setAxisYLeft(
+//                new Axis()
+//                        .setHasSeparationLine(false)
+//                        .setHasLines(false)
+//                        .setTextSize(0)
+//                        .setTypeface(labelTypeface)
+//                        .setTextColor(getActivity().getColor(R.color.white))
+//        );
+        data.setLines(lines);
+        data.setAxisXBottom(
                 new Axis(axisValues)
                         .setHasSeparationLine(false)
                         .setHasLines(false)
                         .setTypeface(labelTypeface)
                         .setTextColor(getActivity().getColor(R.color.black))
         );
-
-        lineChartData.setAxisYLeft(
-                new Axis()
-                        .setHasSeparationLine(false)
-                        .setHasLines(false)
-                        .setTextSize(0)
-                        .setTypeface(labelTypeface)
-                        .setTextColor(getActivity().getColor(R.color.white))
-        );
-
-        mLineChart.setLineChartData(lineChartData);
+        mLineChart.setLineChartData(data);
         // For build-up animation we have to disable viewport recalculation.
         mLineChart.setViewportCalculationEnabled(false);
 
