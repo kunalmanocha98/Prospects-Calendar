@@ -72,5 +72,4 @@ public class DayFragment extends Fragment {
         return rootView;
     }
 
-
 }
