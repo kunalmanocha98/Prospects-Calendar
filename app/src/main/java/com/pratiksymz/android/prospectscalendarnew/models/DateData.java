@@ -8,7 +8,7 @@ public class DateData {
     @SerializedName("total")
     private int dayTotal;
 
-    @SerializedName("expenses")
+    @SerializedName("day_items")
     private List<DayItem> dayItems;
 
     public int getDayTotal() {

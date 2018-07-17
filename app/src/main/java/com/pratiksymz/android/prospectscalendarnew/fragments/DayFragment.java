@@ -47,19 +47,17 @@ public class DayFragment extends Fragment {
         apiService.dayResults().enqueue(new Callback<DayApi>() {
             @Override
             public void onResponse(Call<DayApi> call, Response<DayApi> response) {
-                DayApi dayApi = response.body();
-                if (dayApi.getStatusCode() == 101 && dayApi.getStatusMessage().equals("success")) {
-                    List<DayResult> dayResults = dayApi.getDayResults();
+                if (response.isSuccessful()) {
+                    if (response.body().getStatusMessage().equals("success")) {
 
-                    // Call the DaySection Adapter
-                    DaySectionAdapter adapter = new DaySectionAdapter(getActivity(), dayResults);
-                    RecyclerView recyclerView = rootView.findViewById(R.id.day_section_recycler_view);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    recyclerView.setAdapter(adapter);
+                        // Call the DaySection Adapterhttp://bydegreestest.agnitioworld.com/calendar_management/day.php
+                        DaySectionAdapter adapter = new DaySectionAdapter(getActivity(), response.body().getDayResults());
+                        RecyclerView recyclerView = rootView.findViewById(R.id.day_section_recycler_view);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                        recyclerView.setAdapter(adapter);
+                    }
                 } else {
-                    Log.d("No Result",
-                            dayApi.getStatusCode() + " " + dayApi.getStatusMessage()
-                    );
+                    Log.d("No Result", "no result");
                 }
             }
 

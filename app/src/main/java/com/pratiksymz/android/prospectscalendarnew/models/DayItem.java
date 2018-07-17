@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class DayItem {
     @SerializedName("id")
-    private long id;
+    private String id;
 
     @SerializedName("time")
     private long time;
@@ -24,7 +24,7 @@ public class DayItem {
     @SerializedName("receipt_url")
     private String receiptUrl;
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 

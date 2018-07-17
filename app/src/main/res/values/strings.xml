@@ -12,5 +12,6 @@
     <string name="fri">Fri</string>
     <string name="sat">Sat</string>
     <string name="last_date">30</string>
+    <string name="rupeesymbol">₹</string>
 
 </resources>

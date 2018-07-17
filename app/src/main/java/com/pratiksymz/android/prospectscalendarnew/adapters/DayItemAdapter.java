@@ -87,7 +87,7 @@ public class DayItemAdapter extends RecyclerView.Adapter<DayItemAdapter.ViewHold
         viewHolder.paymentMethod.setText(dayItem.getPaymentMethod());
         viewHolder.paymentMethod.setTextColor(Color.parseColor(color));
 
-        viewHolder.amount.setText(String.valueOf(dayItem.getAmount()));
+        viewHolder.amount.setText("₹"+String.valueOf(dayItem.getAmount()));
     }
 
     @Override

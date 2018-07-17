@@ -42,7 +42,7 @@ public class DaySectionAdapter extends RecyclerView.Adapter<DaySectionAdapter.Vi
         TextView mDateTotal = viewHolder.mDayExpenseTotal;
 
         mDate.setText(dayResult.getDate());
-        mDateTotal.setText(String.valueOf(dayResult.getDateData().getDayTotal()));
+        mDateTotal.setText("₹"+String.valueOf(dayResult.getDateData().getDayTotal()));
 
         RecyclerView dayExpensesView = viewHolder.mDayExpensesView;
         dayExpensesView.setLayoutManager(new LinearLayoutManager(mContext));
