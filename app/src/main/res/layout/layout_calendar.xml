@@ -3,7 +3,8 @@
     android:id="@+id/activity_custom_calendar"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+   >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -136,16 +137,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone" />
-
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/darkGray">
     <GridView
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginBottom="1dp"
         android:id="@+id/calendar_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        android:horizontalSpacing="1dp"
+        android:background="@color/darkGray"
         android:numColumns="7"
         android:stretchMode="columnWidth"
+        android:visibility="visible"
         android:verticalSpacing="1dp"
-        android:visibility="visible" />
-
+        android:horizontalSpacing="1dp"/>
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:theme="@style/MyProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+      </RelativeLayout>
 </LinearLayout>

@@ -38,7 +38,7 @@ public class MonthSectionAdapter extends RecyclerView.Adapter<MonthSectionAdapte
     public void onBindViewHolder(@NonNull MonthSectionAdapter.ViewHolder vh, int position) {
         vh.month_item.setText(list.get(position).getMonth());
         vh.month_item_total.setText("₹"+list.get(position).getMonthData().getTotal());
-        vh.monthitemcontainer.setOnClickListener(view -> monthitemclicklistener.onmonthitemclick());
+        vh.monthitemcontainer.setOnClickListener(view -> monthitemclicklistener.onmonthitemclick(list.get(position).getMonth()));
     }
 
     @Override
@@ -57,6 +57,6 @@ public class MonthSectionAdapter extends RecyclerView.Adapter<MonthSectionAdapte
         }
     }
     public interface monthitemclicklistener{
-       void onmonthitemclick();
+       void onmonthitemclick(String month);
     }
 }

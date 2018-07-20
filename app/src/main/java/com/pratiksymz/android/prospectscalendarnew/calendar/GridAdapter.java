@@ -1,9 +1,11 @@
 package com.pratiksymz.android.prospectscalendarnew.calendar;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pratiksymz.android.prospectscalendarnew.R;
+import com.pratiksymz.android.prospectscalendarnew.models.DayResult;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class GridAdapter extends ArrayAdapter {
     /**
@@ -46,29 +52,32 @@ public class GridAdapter extends ArrayAdapter {
     /**
      * @ArrayList of Calendar Cell Events
      */
-    private List<CellEvent> mAllEvents;
+    private List<DayResult> dayResultList;
 
     /**
      * The cell height
      */
     private int mHeight;
+    /**
+     * Input Date Format
+     */
+    SimpleDateFormat dFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
     /**
      * Public Constructor
      *
-     * @param context      The context of the parent activity
-     * @param monthlyDates The List of dates of a month
-     * @param currentDate  The current date instance
-     * @param allEvents    The list of calendar cell events
-     * @param height       The grid height
+     * @param context       The context of the parent activity
+     * @param monthlyDates  The List of dates of a month
+     * @param currentDate   The current date instance
+     * @param dayResultList The list of calendar cell events
+     * @param height        The grid height
      */
-    public GridAdapter(Context context, List<Date> monthlyDates, Calendar currentDate, List<CellEvent> allEvents, int height) {
+    public GridAdapter(Context context, List<Date> monthlyDates, Calendar currentDate, List<DayResult> dayResultList, int height) {
         super(context, R.layout.layout_calendar_cell);
-
         mContext = context;
         mMonthlyDates = monthlyDates;
         mCurrentDate = currentDate;
-        mAllEvents = allEvents;
+        this.dayResultList = dayResultList;
         mInflater = LayoutInflater.from(context);
         mHeight = height;
     }
@@ -102,7 +111,8 @@ public class GridAdapter extends ArrayAdapter {
             view.setBackgroundColor(mContext.getColor(R.color.white));
 
         } else {
-            view.setBackgroundColor(mContext.getColor(R.color.lighterGray));
+            view.setBackgroundColor(mContext.getColor(R.color.white));
+            view.setAlpha((float) 0.7);
         }
 
         // Add the day to calendar
@@ -113,14 +123,21 @@ public class GridAdapter extends ArrayAdapter {
         TextView eventIndicator = view.findViewById(R.id.event_id);
 
         LinearLayout linearLayout = view.findViewById(R.id.event_wrapper);
-        linearLayout.setBackgroundColor(Color.parseColor("#ffffff"));
+        linearLayout.setVisibility(View.GONE);
         Calendar eventCalendar = Calendar.getInstance();
-        for (int i = 0; i < mAllEvents.size(); i++) {
-            eventCalendar.setTime(mAllEvents.get(i).getDate());
+        for (int i = 0; i < dayResultList.size(); i++) {
+            Date date = null;
+            try {
+                date = dFormat.parse(dayResultList.get(i).getDate());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            eventCalendar.setTime(date);
             if (dayValue == eventCalendar.get(Calendar.DAY_OF_MONTH) && displayMonth == eventCalendar.get(Calendar.MONTH) + 1
                     && displayYear == eventCalendar.get(Calendar.YEAR)) {
-                linearLayout.setBackgroundColor(Color.parseColor("#ed5050"));
-                eventIndicator.setText("₹20000");
+                linearLayout.setVisibility(View.VISIBLE);
+                linearLayout.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.amber));
+                eventIndicator.setText("₹"+Integer.toString(dayResultList.get(i).getDateData().getDayTotal()));
             }
         }
         return view;

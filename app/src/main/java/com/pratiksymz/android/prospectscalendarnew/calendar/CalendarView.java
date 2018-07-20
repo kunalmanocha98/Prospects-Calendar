@@ -3,6 +3,9 @@ package com.pratiksymz.android.prospectscalendarnew.calendar;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -13,18 +16,28 @@ import android.view.ViewTreeObserver;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.pratiksymz.android.prospectscalendarnew.Dialogs.CustomDialog;
 import com.pratiksymz.android.prospectscalendarnew.activities.EditorActivity;
 import com.pratiksymz.android.prospectscalendarnew.R;
+import com.pratiksymz.android.prospectscalendarnew.models.DayApi;
+import com.pratiksymz.android.prospectscalendarnew.models.DayResult;
+import com.pratiksymz.android.prospectscalendarnew.retrofit.ApiService;
+import com.pratiksymz.android.prospectscalendarnew.retrofit.ApiUtils;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class CalendarView extends LinearLayout {
@@ -97,6 +110,14 @@ public class CalendarView extends LinearLayout {
      * @ArrayList of Calendar Cell Events
      */
     List<CellEvent> mCellEvents = new ArrayList<>();
+    /**
+     * @Object  of ApiService
+     */
+    ApiService apiService;
+    /**
+     * @ProgressBar of calendar
+     */
+    ProgressBar progressBar;
 
     /**
      * @array of cell height (final)
@@ -153,13 +174,16 @@ public class CalendarView extends LinearLayout {
         setGridCellClickEvents();
     }
 
-    /**
-     * Public Constructor
-     *
-     * @param context      The Context of the Activity
-     * @param attrs        The attribute of the mCalendar
-     * @param defStyleAttr The default attributes of the mCalendar
-     */
+    private FragmentActivity c;
+
+
+    public FragmentActivity getmContext() {
+        return c;
+    }
+    public void setmContext(FragmentActivity context) {
+        this.c=context;
+//        c.getSupportFragmentManager();
+    }
     public CalendarView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
@@ -184,6 +208,9 @@ public class CalendarView extends LinearLayout {
         gridLayoutManager = new GridLayoutManager(mContext, 7);
         gridLayoutManager.setOrientation(VERTICAL);
         mCellsRecyclerView.setLayoutManager(gridLayoutManager);
+        progressBar=findViewById(R.id.progress_bar);
+        progressBar.setVisibility(View.GONE);
+        apiService= ApiUtils.getApiService();
     }
 
     /**
@@ -191,6 +218,7 @@ public class CalendarView extends LinearLayout {
      */
     private void setPreviousButtonClickEvent() {
         mPreviousButton.setOnClickListener(view -> {
+            progressBar.setVisibility(View.VISIBLE);
             mCalendar.add(Calendar.MONTH, -1);
             setUpCalendarAdapter();
         });
@@ -200,7 +228,9 @@ public class CalendarView extends LinearLayout {
      * Helper method to set the next button click event
      */
     private void setNextButtonClickEvent() {
+
         mNextButton.setOnClickListener(view -> {
+            progressBar.setVisibility(View.VISIBLE);
             mCalendar.add(Calendar.MONTH, 1);
             setUpCalendarAdapter();
         });
@@ -220,9 +250,15 @@ public class CalendarView extends LinearLayout {
             dateParts[0] = setDayOfMonthSuffix(dateParts[0]);
             currentDate = mergeDateParts(dateParts);
             editorIntent.putExtra("current_date", currentDate);
+//            DialogFragment dialogFragment=new CustomDialog2();
+//            dialogFragment.show(c.getSupportFragmentManager(),"dialog");
 
-            // Start the activity
-            mContext.startActivity(editorIntent);
+            CustomDialog dialog=new CustomDialog(mContext,R.style.MyDialog);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            dialog.setCancelable(true);
+            dialog.show();
+//            Start the activity
+//            mContext.startActivity(editorIntent);
         });
     }
 
@@ -233,19 +269,22 @@ public class CalendarView extends LinearLayout {
         dayValueInCells.clear();
         mCellEvents.clear();
 
-        String dateInString = "27-06-2018";
-        Date date = null;
-        try {
-            date = dFormat.parse(dateInString);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+//        String dateInString = "27-06-2018";
+//        Date date = null;
+//        try {
+//            date = dFormat.parse(dateInString);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
 
         // Add a placeholder cell event to the list
-        mCellEvents.add(new CellEvent("Hello", date));
+//        mCellEvents.add(new CellEvent("Hello", date));
 
         Calendar calendar = (Calendar) mCalendar.clone();
-
+        SimpleDateFormat month_date = new SimpleDateFormat("MMM");
+        String month_name = month_date.format(calendar.getTime());
+//        Toast.makeText(mContext, ""+month_name, Toast.LENGTH_SHORT).show();
+        getdates(month_name);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
 
         int firstDayOfTheMonth = calendar.get(Calendar.DAY_OF_WEEK) - 1;
@@ -259,10 +298,37 @@ public class CalendarView extends LinearLayout {
 
         Log.d(LOG_TAG, "Number of dates: " + dayValueInCells.size());
 
-        String formattedDate = formatter.format(mCalendar.getTime());
-        mCurrentDate.setText(formattedDate);
+
 
         // Determine the height of the calendar to be inflated during runtime, if not already known
+
+    }
+
+    private void getdates(String month_name) {
+        apiService.monthwisedataresults(month_name).enqueue(new Callback<DayApi>() {
+            @Override
+            public void onResponse(Call<DayApi> call, Response<DayApi> response) {
+                if(response.isSuccessful()){
+                    if (response.body().getStatusMessage().equals("success")){
+                        setcalendar(response.body().getDayResults());
+                        Log.e("response","success");
+                    }
+                }else{
+                    Log.e("response","unsuccessful");
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DayApi> call, Throwable t) {
+                setcalendar(Collections.emptyList());
+                Log.e("response","failed");
+            }
+        });
+    }
+
+    private void setcalendar(List<DayResult> dayResults) {
+        setValues(dayResults);
         if (heightDetermined) {
             final ViewTreeObserver observe = mCalendarGridView.getViewTreeObserver();
             observe.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -270,21 +336,24 @@ public class CalendarView extends LinearLayout {
                 public void onGlobalLayout() {
                     mCalendarGridView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                     height[0] = mCalendarGridView.getHeight();
-                    setValues();
+                    setValues(dayResults);
                     heightDetermined = false;
                 }
             });
         } else {
             // Height already determined. Set the cells on the grid
-            setValues();
+            setValues(dayResults);
         }
-    }
 
+    }
     /**
      * Helper method to adapt the calendar grid onto the rootview
      */
-    private void setValues() {
-        mGridAdapter = new GridAdapter(mContext, dayValueInCells, mCalendar, mCellEvents, height[0]);
+    private void setValues(List<DayResult> dayResults) {
+        progressBar.setVisibility(View.GONE);
+        String formattedDate = formatter.format(mCalendar.getTime());
+        mCurrentDate.setText(formattedDate);
+        mGridAdapter = new GridAdapter(mContext, dayValueInCells, mCalendar, dayResults, height[0]);
         mCalendarGridView.setAdapter(mGridAdapter);
     }
 
@@ -328,4 +397,5 @@ public class CalendarView extends LinearLayout {
 
         return builder.toString();
     }
+
 }

@@ -27,9 +27,9 @@ public class CalendarFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_calendar, container, false);
-
         // Initialize the Custom Calendar View
         CalendarView mView = rootView.findViewById(R.id.custom_calendar);
+        mView.setmContext(getActivity());
         return rootView;
     }
 

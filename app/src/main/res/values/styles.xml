@@ -14,4 +14,19 @@
         <item name="android:statusBarColor">@color/colorlightred</item>
     </style>
 
+    <style name="MyFloatingActionButton" parent="Theme.AppCompat.Light">
+        <!--<item name="colorBackgroundFloating">@color/darkPurple</item>-->
+        <!--<item name="colorForegroundFloating">@color/darkPurple</item>-->
+        <item name="colorAccent">@color/darkPurple</item>
+    </style>
+    <style name="MyProgressBar" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@color/progresscolor</item>
+    </style>
+
+    <style name="MyDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowMinWidthMajor">99%</item>
+        <item name="android:windowMinWidthMinor">99%</item>
+    </style>
+
+
 </resources>

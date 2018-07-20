@@ -46,12 +46,9 @@ ApiService apiService;
                    if (response.body().getMessage().equals("success")){
                        RecyclerView recyclerView=v.findViewById(R.id.rv_month_section);
                        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                       MonthSectionAdapter adapter=new MonthSectionAdapter(getActivity(),response.body().getMonthresults(), new MonthSectionAdapter.monthitemclicklistener() {
-                           @Override
-                           public void onmonthitemclick(){
-                               DaysofMonthFragment  daysofMonthFragment=new DaysofMonthFragment();
-                               loadfragment(daysofMonthFragment);
-                           }
+                       MonthSectionAdapter adapter=new MonthSectionAdapter(getActivity(),response.body().getMonthresults(), month -> {
+                           DaysofMonthFragment  daysofMonthFragment=new DaysofMonthFragment();
+                           loadfragment(daysofMonthFragment,month);
                        });
                        recyclerView.setAdapter(adapter);
                        Log.e("response","is successful");
@@ -72,8 +69,11 @@ ApiService apiService;
        return v;
     }
 
-    private void loadfragment(Fragment fragment) {
+    private void loadfragment(Fragment fragment,String month) {
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        Bundle bundle=new Bundle();
+        bundle.putString("month",month);
+        fragment.setArguments(bundle);
         transaction.replace(R.id.layout_container,fragment);
         transaction.addToBackStack(null);
         transaction.commit();

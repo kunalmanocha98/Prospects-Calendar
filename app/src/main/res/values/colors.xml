@@ -7,9 +7,10 @@
     <color name="violet">#651fff</color>
     <color name="lightPurple">#EA80FC</color>
     <color name="darkPurple">#AB47BC</color>
-    <color name="white">#fafafa</color>
+    <color name="white">#ffffff</color>
     <color name="black">#212121</color>
     <color name="lighterGray">#E0E0E0</color>
+    <color name="darkGray">#bcbcbc</color>
     <color name="amber">#FFD740</color>
 
     <!-- Calendar -->
@@ -17,5 +18,6 @@
     <color name="colorBlack">#000000</color>
     <color name="colorred">#ed5050</color>
     <color name="colorlightred">#f97676</color>
+    <color name="progresscolor">#ff0019</color>
 
 </resources>

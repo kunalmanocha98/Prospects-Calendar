@@ -6,7 +6,10 @@ import com.pratiksymz.android.prospectscalendarnew.models.MonthApi;
 import com.pratiksymz.android.prospectscalendarnew.models.MonthWiseApi;
 
 import retrofit2.Call;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 
 public interface ApiService {
     @GET("home.php")
@@ -18,6 +21,7 @@ public interface ApiService {
     @GET("month.php")
     Call<MonthApi> monthresults();
 
-    @GET("monthWiseData.php")
-    Call<MonthWiseApi> monthwisedataresults();
+    @POST("monthWiseData.php")
+    @FormUrlEncoded
+    Call<DayApi> monthwisedataresults(@Field("month") String month);
 }
