@@ -1,1 +1,1 @@
-include ':app', ':prospectscalendar'
+include ':app', ':calendar-sdk'

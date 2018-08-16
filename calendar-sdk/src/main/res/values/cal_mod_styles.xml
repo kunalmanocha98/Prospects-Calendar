@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="cardViewStyle">@style/CardView</item>
     </style>
 
     <style name="MyTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -13,6 +14,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/black</item>
+
     </style>
 
     <style name="CustomNotitlebar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -25,8 +27,9 @@
         <!--<item name="colorForegroundFloating">@color/darkPurple</item>-->
         <item name="colorAccent">@color/darkPurple</item>
     </style>
+
     <style name="MyProgressBar" parent="Theme.AppCompat.Light">
-        <item name="colorAccent">@color/progresscolor</item>
+        <item name="colorAccent">@color/testdemo</item>
     </style>
 
     <style name="MyDialog" parent="Theme.AppCompat.Dialog">
@@ -34,5 +37,12 @@
         <item name="android:windowMinWidthMinor">99%</item>
     </style>
 
+    <style name="MyDatepicker" parent="Base.Theme.AppCompat.Light.Dialog">
+        <item name="android:colorAccent">@color/testdemo</item>
+        <item name="colorControlActivated">@color/testdemo</item>
+    </style>
+    <style name="myswitch" parent="Base.TextAppearance.AppCompat.Widget.Switch">
+        <item name="android:colorAccent">@color/testdemo</item>
+    </style>
 
 </resources>

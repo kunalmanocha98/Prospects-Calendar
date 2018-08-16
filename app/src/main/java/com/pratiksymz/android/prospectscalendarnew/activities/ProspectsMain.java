@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-import com.agnitio.prospectscalendar.activities.CalModActivityMain;
+import com.agnitio.calendar.activities.CalModActivityMain;
 import com.pratiksymz.android.prospectscalendarnew.R;
 
 public class ProspectsMain extends AppCompatActivity {

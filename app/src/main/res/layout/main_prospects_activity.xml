@@ -3,5 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="khatam ho gyi hip hip hurray yes yes yesy yes"
+        android:gravity="center"/>
 
 </android.support.constraint.ConstraintLayout>
