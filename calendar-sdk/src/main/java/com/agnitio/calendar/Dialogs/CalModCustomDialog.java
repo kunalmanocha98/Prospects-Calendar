@@ -52,21 +52,6 @@ public class CalModCustomDialog extends Dialog implements View.OnClickListener {
         txt_date.setText(currentdate);
     }
 
-    private String getDayNumberSuffix(int day) {
-        if (day >= 11 && day <= 13) {
-            return "<sup>th</sup>";
-        }
-        switch (day % 10) {
-            case 1:
-                return "<sup>st</sup>";
-            case 2:
-                return "<sup>nd</sup>";
-            case 3:
-                return "<sup>rd</sup>";
-            default:
-                return "<sup>th</sup>";
-        }
-    }
 
     @Override
     public void onClick(View view) {

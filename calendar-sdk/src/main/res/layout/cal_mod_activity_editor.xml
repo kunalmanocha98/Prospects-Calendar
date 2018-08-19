@@ -71,7 +71,7 @@
                     android:text="Add Multiple Dates"
                     android:textColor="@color/black" />
 
-                <android.support.v7.widget.SwitchCompat
+                <Switch
                     android:id="@+id/mswitch"
                     android:layout_width="wrap_content"
                     android:theme="@style/myswitch"

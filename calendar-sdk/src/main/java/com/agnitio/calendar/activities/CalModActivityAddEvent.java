@@ -1,26 +1,42 @@
 package com.agnitio.calendar.activities;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.SwitchCompat;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 
+import com.agnitio.calendar.Dialogs.CalModAmountDialog;
+import com.agnitio.calendar.Dialogs.CalModPaymentCategoryDialog;
+import com.agnitio.calendar.Dialogs.CalModPaymentMethodDialog;
+import com.agnitio.calendar.Dialogs.CalModPaymentSubCategoryDialog;
 import com.agnitio.calendar.R;
+import com.agnitio.calendar.models.AddEVentActivityData;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 public class CalModActivityAddEvent extends AppCompatActivity {
     CardView btn_add_image_receipt, btn_submit_details;
     ImageView imageView;
-    SwitchCompat mswitch;
+    Switch mswitch;
     RelativeLayout singledatewrapper, multipledatewrapper;
     TextView btn_date_single, btn_time_single, txt_start_date, txt_end_date;
     RelativeLayout btn_start_date, btn_end_date;
@@ -29,12 +45,16 @@ public class CalModActivityAddEvent extends AppCompatActivity {
     AlertDialog alertDialog;
     int REQUEST_OPEN_GALLERY_ID = 101;
     int REQUEST_IMAGE_CAPTURE_ID = 102;
+    Uri mExpenseReceiptUri;
+    AddEVentActivityData temp_data;
+    CalModAmountDialog dialog;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cal_mod_activity_editor);
+//        initialization
         imageView = findViewById(R.id.imgv_receipt);
         btn_add_image_receipt = findViewById(R.id.btn_add_receipt);
         mswitch = findViewById(R.id.mswitch);
@@ -53,22 +73,75 @@ public class CalModActivityAddEvent extends AppCompatActivity {
         payment_method = findViewById(R.id.txt_payment_method);
         payment_description = findViewById(R.id.txt_payment_description);
         btn_submit_details = findViewById(R.id.btn_submit);
+        temp_data=new AddEVentActivityData();
 
+//        necessary before loading
 
-        btn_add_image_receipt.setOnClickListener((View view) -> {
-            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-            LayoutInflater layoutInflater = LayoutInflater.from(this);
-            View alertView = layoutInflater.inflate(R.layout.cal_mod_layout_dialog_image_option, findViewById(R.id.image_alert_root));
-            alertBuilder.setView(alertView);
-            alertDialog = alertBuilder.create();
-            alertDialog.show();
-            ImageButton openGalleryButton = alertView.findViewById(R.id.button_select_from_gallery);
-            openGalleryButton.setOnClickListener(view1 -> openGallery());
+        multipledatewrapper.setVisibility(View.GONE);
+        singledatewrapper.setVisibility(View.VISIBLE);
+        add_details.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#e85b36")));
+        add_details.setImageDrawable(getDrawable(R.drawable.cal_mod_ic_editor_add_receipt));
 
-            ImageButton launchCameraButton = alertView.findViewById(R.id.button_launch_camera);
-            launchCameraButton.setOnClickListener(view2 -> launchCamera());
+//        click listenser
+        add_details.setOnClickListener(view -> {
+            showamountdialog();});
+        btn_add_image_receipt.setOnClickListener((View view) -> {showimageselectiondialog();});
+        mswitch.setOnCheckedChangeListener((compoundButton, ischecked) -> {
+            if (ischecked){
+                multipledatewrapper.setVisibility(View.VISIBLE);
+                singledatewrapper.setVisibility(View.GONE);
+            }else{
+                multipledatewrapper.setVisibility(View.GONE);
+                singledatewrapper.setVisibility(View.VISIBLE);
+            }
         });
 
+    }
+
+    private void showamountdialog() {
+        dialog = new CalModAmountDialog(this);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCancelable(true);
+        dialog.show();
+        dialog.setOnDismissListener(dialogInterface -> { showcategorydialog();});
+    }
+
+    private void showcategorydialog() {
+        CalModPaymentCategoryDialog dialog=new CalModPaymentCategoryDialog(this,R.style.MyDialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCancelable(true);
+        dialog.show();
+        dialog.setOnDismissListener(dialogInterface -> { showsubcategorydialog();});
+    }
+
+
+    private void showsubcategorydialog() {
+        CalModPaymentSubCategoryDialog dialog=new CalModPaymentSubCategoryDialog(this);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCancelable(true);
+        dialog.show();
+        dialog.setOnDismissListener(dialogInterface -> { showpaymentmethoddialog();});
+    }
+
+    private void showpaymentmethoddialog() {
+        CalModPaymentMethodDialog dialog=new CalModPaymentMethodDialog(this);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCancelable(true);
+        dialog.show();
+    }
+
+    private void showimageselectiondialog() {
+        AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        LayoutInflater layoutInflater = LayoutInflater.from(this);
+        View alertView = layoutInflater.inflate(R.layout.cal_mod_layout_dialog_image_option, findViewById(R.id.image_alert_root));
+        alertBuilder.setView(alertView);
+        alertDialog = alertBuilder.create();
+        alertDialog.show();
+        ImageButton openGalleryButton = alertView.findViewById(R.id.button_select_from_gallery);
+        openGalleryButton.setOnClickListener(view1 -> openGallery());
+
+        ImageButton launchCameraButton = alertView.findViewById(R.id.button_launch_camera);
+        launchCameraButton.setOnClickListener(view2 -> launchCamera());
     }
 
     private void openGallery() {
@@ -83,6 +156,42 @@ public class CalModActivityAddEvent extends AppCompatActivity {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE_ID);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_OPEN_GALLERY_ID && resultCode == RESULT_OK && data != null) {
+            mExpenseReceiptUri = data.getData();
+            Bitmap receiptBitmap = null;
+
+            try {
+                receiptBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mExpenseReceiptUri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            // Compress the bitmap
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            receiptBitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+            Bitmap receiptBitmapCompressed = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+           imageView.setImageBitmap(receiptBitmapCompressed);
+        } else if (requestCode == REQUEST_IMAGE_CAPTURE_ID && resultCode == RESULT_OK && data != null) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            // Compress the bitmap
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+            Bitmap receiptBitmapCompressed = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+            imageView.setImageBitmap(receiptBitmapCompressed);
+            alertDialog.dismiss();
+
         }
     }
 }
@@ -310,38 +419,3 @@ public class CalModActivityAddEvent extends AppCompatActivity {
 //        }
 //    }
 //
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == REQUEST_OPEN_GALLERY_ID && resultCode == RESULT_OK && data != null) {
-//            mExpenseReceiptUri = data.getData();
-//            Bitmap receiptBitmap = null;
-//
-//            try {
-//                receiptBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mExpenseReceiptUri);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            // Compress the bitmap
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            receiptBitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
-//            byte[] byteArray = byteArrayOutputStream.toByteArray();
-//
-//            Bitmap receiptBitmapCompressed = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-////            mExpenseReceipt.setImageBitmap(receiptBitmapCompressed);
-//        } else if (requestCode == REQUEST_IMAGE_CAPTURE_ID && resultCode == RESULT_OK && data != null) {
-//            Bundle extras = data.getExtras();
-//            Bitmap imageBitmap = (Bitmap) extras.get("data");
-//            // Compress the bitmap
-//            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-//            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
-//            byte[] byteArray = byteArrayOutputStream.toByteArray();
-//
-//            Bitmap receiptBitmapCompressed = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-////            mExpenseReceipt.setImageBitmap(receiptBitmapCompressed);
-//            mAlertDialog.dismiss();
-//
-//        }
-//    }

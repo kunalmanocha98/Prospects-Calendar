@@ -15,6 +15,21 @@
         <item>Other</item>
     </string-array>
 
+    <string-array name="expense_sub_categories">
+        <item>Car</item>
+        <item>Bus</item>
+        <item>Truck</item>
+        <item>Train</item>
+
+    </string-array>
+
+
+    <string-array name="expense_methods">
+        <item>Cash</item>
+        <item>Card</item>
+        <item>Online</item>
+    </string-array>
+
     <string-array name="payment_methods">
         <item>Cash</item>
         <item>Online Payment</item>

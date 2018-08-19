@@ -3,6 +3,6 @@ package com.agnitio.calendar.interfaces;
 /**
  * @interface to send data from CalModDialogAdapter to the CalModActivityAddEvent
  */
-public interface CalModDialogDataTransferInterface {
-    void sendData(String data, boolean isPaymentMethod);
+public interface CalModOnDataSelectListener {
+    void onSelect(String data, boolean ischecked);
 }

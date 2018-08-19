@@ -2,4 +2,5 @@
 <resources>
     <dimen name="elevation">10dp</dimen>
     <dimen name="radius_corner">16dp</dimen>
+    <dimen name="itemdecormargin">32dp</dimen>
 </resources>

@@ -9,29 +9,21 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.agnitio.calendar.R;
-import com.agnitio.calendar.interfaces.CalModDialogDataTransferInterface;
+import com.agnitio.calendar.interfaces.CalModOnDataSelectListener;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class CalModDialogAdapter extends RecyclerView.Adapter<CalModDialogAdapter.ViewHolder> {
     private Context mContext;
-    private List<String> mDialogItems;
-    private List<String> mPaymentMethods;
-    private CalModDialogDataTransferInterface mDataTransferInterface;
+    private List<String> list;
+    private CalModOnDataSelectListener dataSelectListener;
 
-    /**
-     * Dialog Adapter Constructor
-     *
-     * @param context
-     * @param dialogItems
-     */
-    public CalModDialogAdapter(Context context, List<String> dialogItems,
-                               CalModDialogDataTransferInterface dataTransferInterface) {
+
+    public CalModDialogAdapter(Context context, List<String> dialogItems, CalModOnDataSelectListener dataTransferInterface) {
         mContext = context;
-        mDialogItems = dialogItems;
-        mPaymentMethods = Arrays.asList(context.getResources().getStringArray(R.array.payment_methods));
-        mDataTransferInterface = dataTransferInterface;
+        list = dialogItems;
+        dataSelectListener= dataTransferInterface;
     }
 
     @NonNull
@@ -41,41 +33,27 @@ public class CalModDialogAdapter extends RecyclerView.Adapter<CalModDialogAdapte
         LayoutInflater layoutInflater = LayoutInflater.from(context);
 
         View itemView = layoutInflater.inflate(R.layout.cal_mod_layout_dialog_option_item, viewGroup, false);
-        ViewHolder viewHolder = new ViewHolder(context, itemView);
+        ViewHolder viewHolder = new ViewHolder(itemView);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        // Get the data item based on position
-        String option = mDialogItems.get(position);
-
-        TextView optionView = viewHolder.optionTextView;
-        optionView.setText(option);
-
-        optionView.setOnClickListener(view -> {
-            boolean isAPaymentMethod = mPaymentMethods.contains(option);
-            mDataTransferInterface.sendData(option, isAPaymentMethod);
-        });
+    public void onBindViewHolder(@NonNull ViewHolder vh, int position) {
+            vh.optionitem.setText(list.get(position));
+            vh.optionitem.setOnClickListener(view -> {dataSelectListener.onSelect(list.get(position),true);});
     }
 
     @Override
     public int getItemCount() {
-        return mDialogItems.size();
+        return list.size();
     }
 
-    /**
-     * Inner ViewHolder class
-     */
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private Context context;
-        private TextView optionTextView;
+        TextView optionitem;
 
-        public ViewHolder(Context context, View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
-
-            this.context = context;
-            optionTextView = itemView.findViewById(R.id.dialog_option_text_view);
+            optionitem = itemView.findViewById(R.id.dialog_option_text_view);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.agnitio.calendar.retrofit;
 
 
+import com.agnitio.calendar.models.CalModCategoryListApi;
 import com.agnitio.calendar.models.CalModDayApi;
 import com.agnitio.calendar.models.CalModHomeApi;
 import com.agnitio.calendar.models.CalModMonthApi;
@@ -20,6 +21,9 @@ public interface CalModApiService {
 
     @GET("month.php")
     Call<CalModMonthApi> monthresults();
+
+    @GET("categoryList.php")
+    Call<CalModCategoryListApi> categoryresults();
 
     @POST("monthWiseData.php")
     @FormUrlEncoded

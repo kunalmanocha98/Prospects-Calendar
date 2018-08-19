@@ -41,8 +41,9 @@
         <item name="android:colorAccent">@color/testdemo</item>
         <item name="colorControlActivated">@color/testdemo</item>
     </style>
-    <style name="myswitch" parent="Base.TextAppearance.AppCompat.Widget.Switch">
+    <style name="myswitch" parent="Theme.AppCompat.Light">
         <item name="android:colorAccent">@color/testdemo</item>
+        <item name="colorControlActivated">@color/testdemo</item>
     </style>
 
 </resources>
