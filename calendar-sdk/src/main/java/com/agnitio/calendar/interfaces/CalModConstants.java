@@ -1,6 +1,9 @@
 package com.agnitio.calendar.interfaces;
 
+import android.text.format.Time;
+
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class CalModConstants {
@@ -35,12 +38,31 @@ public class CalModConstants {
         public static final String FRAGMENT_NAME_MONTH="CalModMonthFragment";
         public static final String FRAGMENT_NAME_CALENDAR="CalModCalendarFragment";
     }
-    public static final class DateFormatter{
+    public static final class DateTimeFormatter {
 
         public static final String converttodateformat(String format, Date date){
             SimpleDateFormat formatter = new SimpleDateFormat(format);
             return formatter.format(date);
         }
+
+        public static final String converttotimeformat(String format,Date date){
+            SimpleDateFormat formatter = new SimpleDateFormat(format);
+            return formatter.format(date);
+
+        }
+    }
+
+
+    public static final class DialogConstants{
+        public static int CATEGORY_POSITION=-1;
+
+        public static int SUB_CATEGORY_POSITION=-1;
+
+        public static int PAYMENT_METHOD_POSITION=-1;
+
+        public static String PAYMENT_DESCRIPTION="";
+
+        public static String PAYMENT_AMOUNT="";
     }
 
 

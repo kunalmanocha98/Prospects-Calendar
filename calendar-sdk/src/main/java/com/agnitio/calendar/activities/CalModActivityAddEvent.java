@@ -1,5 +1,7 @@
 package com.agnitio.calendar.activities;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -14,7 +16,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -25,13 +27,24 @@ import android.widget.TextView;
 
 import com.agnitio.calendar.Dialogs.CalModAmountDialog;
 import com.agnitio.calendar.Dialogs.CalModPaymentCategoryDialog;
+import com.agnitio.calendar.Dialogs.CalModPaymentDescriptionDialog;
 import com.agnitio.calendar.Dialogs.CalModPaymentMethodDialog;
 import com.agnitio.calendar.Dialogs.CalModPaymentSubCategoryDialog;
 import com.agnitio.calendar.R;
+import com.agnitio.calendar.interfaces.CalModConstants;
 import com.agnitio.calendar.models.AddEVentActivityData;
+import com.agnitio.calendar.models.CalModCategoryListApi;
+import com.agnitio.calendar.models.CalModCategoryandMethodResults;
+import com.agnitio.calendar.retrofit.CalModApiService;
+import com.agnitio.calendar.retrofit.CalModApiUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CalModActivityAddEvent extends AppCompatActivity {
     CardView btn_add_image_receipt, btn_submit_details;
@@ -48,13 +61,17 @@ public class CalModActivityAddEvent extends AppCompatActivity {
     Uri mExpenseReceiptUri;
     AddEVentActivityData temp_data;
     CalModAmountDialog dialog;
+    CalModCategoryandMethodResults results;
+    DatePickerDialog startdatePicker, enddatePicker;
+    DatePickerDialog singledatepicker;
+    TimePickerDialog singletimepicker;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cal_mod_activity_editor);
-//        initialization
+//      id  initialization
         imageView = findViewById(R.id.imgv_receipt);
         btn_add_image_receipt = findViewById(R.id.btn_add_receipt);
         mswitch = findViewById(R.id.mswitch);
@@ -73,67 +90,151 @@ public class CalModActivityAddEvent extends AppCompatActivity {
         payment_method = findViewById(R.id.txt_payment_method);
         payment_description = findViewById(R.id.txt_payment_description);
         btn_submit_details = findViewById(R.id.btn_submit);
-        temp_data=new AddEVentActivityData();
 
-//        necessary before loading
 
+//        getdialogdata
+        getdialogdata();
+
+
+//      temporary data for dialogs
+        temp_data = new AddEVentActivityData();
+
+//      necesary inputs
         multipledatewrapper.setVisibility(View.GONE);
         singledatewrapper.setVisibility(View.VISIBLE);
         add_details.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#e85b36")));
         add_details.setImageDrawable(getDrawable(R.drawable.cal_mod_ic_editor_add_receipt));
 
+//        multiple date picker
+        startdatePicker = new DatePickerDialog(this, R.style.MyDatepicker, startdateSetListener, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        enddatePicker = new DatePickerDialog(this, R.style.MyDatepicker, enddateSetListener, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+
+
+//        single date and time picker
+
+        singledatepicker =new DatePickerDialog(this,R.style.MyDatepicker,singledateSetListener,Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        singletimepicker=new TimePickerDialog(this,R.style.MyDatepicker,singleTimeSetListener,Calendar.getInstance().get(Calendar.HOUR_OF_DAY),Calendar.getInstance().get(Calendar.MINUTE),false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
 //        click listenser
         add_details.setOnClickListener(view -> {
-            showamountdialog();});
-        btn_add_image_receipt.setOnClickListener((View view) -> {showimageselectiondialog();});
+            showamountdialog(true);
+        });
+        btn_add_image_receipt.setOnClickListener((View view) -> {
+            showimageselectiondialog();
+        });
         mswitch.setOnCheckedChangeListener((compoundButton, ischecked) -> {
-            if (ischecked){
+            if (ischecked) {
                 multipledatewrapper.setVisibility(View.VISIBLE);
                 singledatewrapper.setVisibility(View.GONE);
-            }else{
+            } else {
                 multipledatewrapper.setVisibility(View.GONE);
                 singledatewrapper.setVisibility(View.VISIBLE);
             }
         });
 
+        payment_amount.setOnClickListener(view -> {
+            showamountdialog(false);
+        });
+        payment_category.setOnClickListener(view -> {
+            showcategorydialog(false);
+        });
+        payment_sub_category.setOnClickListener(view -> {
+            showcategorydialog(false);
+        });
+        payment_method.setOnClickListener(view -> {
+            showpaymentmethoddialog(false);
+        });
+        payment_description.setOnClickListener(view -> {
+            showpaymentdescriptiondialog(false);
+        });
+
+        btn_start_date.setOnClickListener(view -> {startdatePicker.show();});
+        btn_end_date.setOnClickListener(view -> {enddatePicker.show();});
+        btn_date_single.setOnClickListener(view -> {singledatepicker.show();});
+        btn_time_single.setOnClickListener(view -> {singletimepicker.show();});
+
     }
 
-    private void showamountdialog() {
-        dialog = new CalModAmountDialog(this);
+    private void showamountdialog(boolean b) {
+        String title = "Enter amount";
+        dialog = new CalModAmountDialog(this, R.style.MyDialog, title);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(true);
         dialog.show();
-        dialog.setOnDismissListener(dialogInterface -> { showcategorydialog();});
+        dialog.setOnDismissListener(dialogInterface -> {
+            payment_amount.setText("₹ " + CalModConstants.DialogConstants.PAYMENT_AMOUNT);
+            if (b) {
+                showcategorydialog(true);
+            }
+
+        });
     }
 
-    private void showcategorydialog() {
-        CalModPaymentCategoryDialog dialog=new CalModPaymentCategoryDialog(this,R.style.MyDialog);
+    private void showcategorydialog(boolean b) {
+        CalModPaymentCategoryDialog dialog = new CalModPaymentCategoryDialog(this, R.style.MyDialog, "Select a category", results.getCategoryList());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(true);
         dialog.show();
-        dialog.setOnDismissListener(dialogInterface -> { showsubcategorydialog();});
+        dialog.setOnDismissListener(dialogInterface -> {
+            payment_category.setText(results.categoryList.get(CalModConstants.DialogConstants.CATEGORY_POSITION).getCategoryname());
+            showsubcategorydialog(b);
+        });
     }
 
 
-    private void showsubcategorydialog() {
-        CalModPaymentSubCategoryDialog dialog=new CalModPaymentSubCategoryDialog(this);
+    private void showsubcategorydialog(boolean b) {
+        String title = "Select a subcategory";
+        CalModPaymentSubCategoryDialog dialog = new CalModPaymentSubCategoryDialog(this, R.style.MyDialog, title, results.getCategoryList().get(CalModConstants.DialogConstants.CATEGORY_POSITION).getSubcategorylist());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(true);
         dialog.show();
-        dialog.setOnDismissListener(dialogInterface -> { showpaymentmethoddialog();});
+        dialog.setOnDismissListener(dialogInterface -> {
+            payment_sub_category.setText(results.categoryList.get(CalModConstants.DialogConstants.CATEGORY_POSITION).getSubcategorylist().get(CalModConstants.DialogConstants.SUB_CATEGORY_POSITION).getItemname());
+            if (b) {
+                showpaymentmethoddialog(true);
+            }
+        });
     }
 
-    private void showpaymentmethoddialog() {
-        CalModPaymentMethodDialog dialog=new CalModPaymentMethodDialog(this);
+    private void showpaymentmethoddialog(boolean b) {
+        String title = "Select a Payment Method";
+        CalModPaymentMethodDialog dialog = new CalModPaymentMethodDialog(this, R.style.MyDialog, title, results.getItemList());
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCancelable(true);
         dialog.show();
+        dialog.setOnDismissListener(dialogInterface -> {
+            payment_method.setText(results.itemList.get(CalModConstants.DialogConstants.PAYMENT_METHOD_POSITION).getItemname());
+            if (b) {
+                showpaymentdescriptiondialog(true);
+            }
+        });
     }
+
+    private void showpaymentdescriptiondialog(boolean b) {
+        String title = "Add a description";
+        CalModPaymentDescriptionDialog dialog = new CalModPaymentDescriptionDialog(this, R.style.MyDialog, title);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setCancelable(true);
+        dialog.show();
+        dialog.setOnDismissListener(dialogInterface -> {
+            if (!CalModConstants.DialogConstants.PAYMENT_DESCRIPTION.equals("")) {
+                payment_description.setText("View");
+            }
+            if (b){
+                add_details.setImageDrawable(getDrawable(R.drawable.cal_mod_ic_editor_time_edit));
+            }
+        });
+    }
+
 
     private void showimageselectiondialog() {
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-        LayoutInflater layoutInflater = LayoutInflater.from(this);
-        View alertView = layoutInflater.inflate(R.layout.cal_mod_layout_dialog_image_option, findViewById(R.id.image_alert_root));
+        View alertView = LayoutInflater.from(this).inflate(R.layout.cal_mod_layout_dialog_image_option, findViewById(R.id.image_alert_root));
         alertBuilder.setView(alertView);
         alertDialog = alertBuilder.create();
         alertDialog.show();
@@ -146,9 +247,7 @@ public class CalModActivityAddEvent extends AppCompatActivity {
 
     private void openGallery() {
         alertDialog.dismiss();
-        Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-        );
-
+        Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(openGalleryIntent, REQUEST_OPEN_GALLERY_ID);
     }
 
@@ -179,7 +278,7 @@ public class CalModActivityAddEvent extends AppCompatActivity {
             byte[] byteArray = byteArrayOutputStream.toByteArray();
 
             Bitmap receiptBitmapCompressed = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-           imageView.setImageBitmap(receiptBitmapCompressed);
+            imageView.setImageBitmap(receiptBitmapCompressed);
         } else if (requestCode == REQUEST_IMAGE_CAPTURE_ID && resultCode == RESULT_OK && data != null) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
@@ -194,56 +293,69 @@ public class CalModActivityAddEvent extends AppCompatActivity {
 
         }
     }
+
+    private void getdialogdata() {
+        CalModApiService calModApiService = CalModApiUtils.getApiService();
+        calModApiService.categoryresults().enqueue(new Callback<CalModCategoryListApi>() {
+            @Override
+            public void onResponse(Call<CalModCategoryListApi> call, Response<CalModCategoryListApi> response) {
+                if (response.isSuccessful()) {
+                    if (response.body().getCode() == 101) {
+                        results = response.body().getCalModCategoryandMethodResults();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CalModCategoryListApi> call, Throwable t) {
+                Log.e("error in category list", t.getLocalizedMessage());
+            }
+        });
+
+
+    }
+
+
+    DatePickerDialog.OnDateSetListener startdateSetListener = (datePicker, year, month, day) -> {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
+        cal.set(Calendar.MONTH, datePicker.getMonth());
+        cal.set(Calendar.YEAR, datePicker.getYear());
+        String singledate= CalModConstants.DateTimeFormatter.converttodateformat("EEE, dd MMM yy",cal.getTime());
+        txt_start_date.setText(singledate);
+    };
+
+
+    DatePickerDialog.OnDateSetListener enddateSetListener = (datePicker, year, month, day) -> {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
+        cal.set(Calendar.MONTH, datePicker.getMonth());
+        cal.set(Calendar.YEAR, datePicker.getYear());
+        String enddate= CalModConstants.DateTimeFormatter.converttodateformat("EEE, dd MMM yy",cal.getTime());
+        txt_end_date.setText(enddate);
+    };
+
+
+
+
+
+    DatePickerDialog.OnDateSetListener singledateSetListener = (datePicker, year, month, day) -> {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
+        cal.set(Calendar.MONTH, datePicker.getMonth());
+        cal.set(Calendar.YEAR, datePicker.getYear());
+        String startdate= CalModConstants.DateTimeFormatter.converttodateformat("EEE, dd MMM yy",cal.getTime());
+        btn_date_single.setText(startdate);
+    };
+
+    TimePickerDialog.OnTimeSetListener singleTimeSetListener= (timePicker, hourofday, minute) -> {
+        Calendar datetime = Calendar.getInstance();
+        datetime.set(Calendar.HOUR_OF_DAY, hourofday);
+        datetime.set(Calendar.MINUTE, minute);
+        String singletime=CalModConstants.DateTimeFormatter.converttotimeformat("hh:mm a",datetime.getTime());
+        btn_time_single.setText(singletime);
+    };
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //        mExpenseReceipt=findViewById(R.id.image_view_receipt);
@@ -361,7 +473,7 @@ public class CalModActivityAddEvent extends AppCompatActivity {
 //            List<String> paymentMethods = Arrays.asList(getResources().getStringArray(R.array.payment_methods));
 //
 //            // Create the adapter
-//            CalModDialogAdapter dialogAdapter = new CalModDialogAdapter(
+//            CalModCategoryDialogAdapter dialogAdapter = new CalModCategoryDialogAdapter(
 //                    this, paymentMethods, this
 //            );
 //            dialogAdapter.notifyDataSetChanged();
@@ -388,7 +500,7 @@ public class CalModActivityAddEvent extends AppCompatActivity {
 //            final List<String> categories = Arrays.asList(getResources().getStringArray(R.array.expense_categories));
 //
 //            // Create the adapter
-//            CalModDialogAdapter dialogAdapter = new CalModDialogAdapter(
+//            CalModCategoryDialogAdapter dialogAdapter = new CalModCategoryDialogAdapter(
 //                    this, categories, this
 //            );
 //            dialogAdapter.notifyDataSetChanged();

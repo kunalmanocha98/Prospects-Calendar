@@ -70,8 +70,8 @@ public class CalModDayFragment extends Fragment implements SwipeRefreshLayout.On
         wrapper_startdate = getView().findViewById(R.id.contentwrapper_startdate);
         txt_startdate=getView().findViewById(R.id.txt_start_date);
         txt_enddate=getView().findViewById(R.id.txt_end_date);
-        txt_startdate.setText(CalModConstants.DateFormatter.converttodateformat("EEE, dd MMM yy",Calendar.getInstance().getTime()));
-        txt_enddate.setText(CalModConstants.DateFormatter.converttodateformat("EEE, dd MMM yy",Calendar.getInstance().getTime()));
+        txt_startdate.setText(CalModConstants.DateTimeFormatter.converttodateformat("EEE, dd MMM yy",Calendar.getInstance().getTime()));
+        txt_enddate.setText(CalModConstants.DateTimeFormatter.converttodateformat("EEE, dd MMM yy",Calendar.getInstance().getTime()));
         startdatePicker = new DatePickerDialog(getActivity(), R.style.MyDatepicker, startdateSetListener, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         enddatePicker = new DatePickerDialog(getActivity(), R.style.MyDatepicker, enddateSetListener, Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
         wrapper_startdate.setOnClickListener(view -> startdatePicker.show());
@@ -131,7 +131,7 @@ public class CalModDayFragment extends Fragment implements SwipeRefreshLayout.On
         cal.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
         cal.set(Calendar.MONTH, datePicker.getMonth());
         cal.set(Calendar.YEAR, datePicker.getYear());
-        String startdate= CalModConstants.DateFormatter.converttodateformat("EEE, dd MMM yy",cal.getTime());
+        String startdate= CalModConstants.DateTimeFormatter.converttodateformat("EEE, dd MMM yy",cal.getTime());
         txt_startdate.setText(startdate);
     };
 
@@ -140,7 +140,7 @@ public class CalModDayFragment extends Fragment implements SwipeRefreshLayout.On
         cal.set(Calendar.DAY_OF_MONTH, datePicker.getDayOfMonth());
         cal.set(Calendar.MONTH, datePicker.getMonth());
         cal.set(Calendar.YEAR, datePicker.getYear());
-        String enddate= CalModConstants.DateFormatter.converttodateformat("EEE, dd MMM yy",cal.getTime());
+        String enddate= CalModConstants.DateTimeFormatter.converttodateformat("EEE, dd MMM yy",cal.getTime());
         txt_enddate.setText(enddate);
     };
 }

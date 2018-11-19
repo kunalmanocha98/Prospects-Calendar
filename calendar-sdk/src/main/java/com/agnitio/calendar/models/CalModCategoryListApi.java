@@ -2,16 +2,25 @@ package com.agnitio.calendar.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class CalModCategoryListApi {
     @SerializedName("code")
-    private Integer code;
+    public Integer code;
 
     @SerializedName("message")
-    private String message;
+    public String message;
 
     @SerializedName("result")
-    private CategoryListResults categoryListResults;
+    public CalModCategoryandMethodResults calModCategoryandMethodResults;
 
+    public Integer getCode() {
+        return code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public CalModCategoryandMethodResults getCalModCategoryandMethodResults() {
+        return calModCategoryandMethodResults;
+    }
 }

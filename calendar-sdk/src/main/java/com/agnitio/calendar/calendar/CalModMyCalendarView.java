@@ -217,7 +217,7 @@ public class CalModMyCalendarView extends LinearLayout implements CalModCustomDi
         progressBar = findViewById(R.id.progress_bar);
         progressBar.setVisibility(View.GONE);
         calModApiService = CalModApiUtils.getApiService();
-        mCurrentDate.setText(CalModConstants.DateFormatter.converttodateformat("MMMM, YYYY",Calendar.getInstance().getTime()));
+        mCurrentDate.setText(CalModConstants.DateTimeFormatter.converttodateformat("MMMM, YYYY",Calendar.getInstance().getTime()));
     }
 
     /**

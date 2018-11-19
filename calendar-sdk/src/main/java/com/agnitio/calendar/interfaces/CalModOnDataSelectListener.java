@@ -1,8 +1,8 @@
 package com.agnitio.calendar.interfaces;
 
 /**
- * @interface to send data from CalModDialogAdapter to the CalModActivityAddEvent
+ * @interface to send data from CalModCategoryDialogAdapter to the CalModActivityAddEvent
  */
 public interface CalModOnDataSelectListener {
-    void onSelect(String data, boolean ischecked);
+    void onSelect(int position,String categoryname);
 }
